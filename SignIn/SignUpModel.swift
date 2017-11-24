@@ -9,11 +9,6 @@
 //   Generic Class :  Maintain by Vijayvir Singh
 
 import UIKit
-import Foundation
-import FontAwesome_swift
-
-
-
 
 class SignUpModel: NSObject,UITextFieldDelegate
 {
@@ -25,27 +20,17 @@ class SignUpModel: NSObject,UITextFieldDelegate
      */
 
     
-    @IBOutlet weak var txtUserId: SkyFloatingLabelTextFieldWithIcon!
+    @IBOutlet weak var txtUserId: SkyFloatingLabelTextField!
     
-    @IBOutlet weak var txtUserName: SkyFloatingLabelTextFieldWithIcon!
+    @IBOutlet weak var txtUserName: SkyFloatingLabelTextField!
     
-    @IBOutlet weak var txtEmailId: SkyFloatingLabelTextFieldWithIcon!
+    @IBOutlet weak var txtEmailId: SkyFloatingLabelTextField!
     
+    @IBOutlet weak var txtPassword: SkyFloatingLabelTextField!
     
+    @IBOutlet weak var txtconfirmPassword: SkyFloatingLabelTextField!
     
-     @IBOutlet weak var txtFirstName: SkyFloatingLabelTextFieldWithIcon!
-    
-     @IBOutlet weak var txtLastName: SkyFloatingLabelTextFieldWithIcon!
-    
-    @IBOutlet weak var txtPhoneNumber: SkyFloatingLabelTextFieldWithIcon!
-    
-    @IBOutlet weak var txtPassword: SkyFloatingLabelTextFieldWithIcon!
-    
-    @IBOutlet weak var txtconfirmPassword: SkyFloatingLabelTextFieldWithIcon!
-    
-    
-
-    var closureDidTapOnSubmit:  ((UserSignUp ) -> ())?
+    var closureDidTapOnSubmit:  (([String:String]   ) -> ())?
     
     
     // MARK: Variables
@@ -54,77 +39,28 @@ class SignUpModel: NSObject,UITextFieldDelegate
     
     // MARK: Actions
     
-    
-    func configure()
-    {
-
-        
-        if (txtFirstName != nil)
-        {
-            txtFirstName.iconLabel.font = UIFont.fontAwesome(ofSize:  (txtFirstName.font?.pointSize)!)
-            txtFirstName.iconLabel.text = String.fontAwesomeIcon(name: .user)
-            
-        }
-      
-    
-        if (txtLastName != nil)
-        {
-            txtLastName.iconLabel.font = UIFont.fontAwesome(ofSize:  (txtLastName.font?.pointSize)!)
-            txtLastName.iconLabel.text = String.fontAwesomeIcon(name: .user)
-            
-        }
-
-        
-        
-        if (txtPhoneNumber != nil)
-        {
-            txtPhoneNumber.iconLabel.font = UIFont.fontAwesome(ofSize:  (txtPhoneNumber.font?.pointSize)!)
-            txtPhoneNumber.iconLabel.text = String.fontAwesomeIcon(code: "fa-mobile-phone")
-        }
-       
-        
-        if (txtPassword != nil)
-        {
-            txtPassword.iconLabel.font = UIFont.fontAwesome(ofSize:  (txtPassword.font?.pointSize)!)
-            txtPassword.iconLabel.text = String.fontAwesomeIcon(code: "fa-key")
-        }
-        
-        
-        if (txtconfirmPassword != nil)
-        {
-            txtconfirmPassword.iconLabel.font = UIFont.fontAwesome(ofSize:  (txtconfirmPassword.font?.pointSize)!)
-            txtconfirmPassword.iconLabel.text = String.fontAwesomeIcon(code: "fa-key")
-            
-        }
-        
- 
-        
-    }
-    
     @IBAction func actionSubmit(_ sender: Any)
     {
       
-    
-        
-        if (txtFirstName != nil)
+        if (txtUserId != nil)
         {
-            if (txtFirstName.text!.isEmpty)
+            if (txtUserId.text!.isEmpty)
             {
-                showAlert( "Please add first name." ,completionHandler:
+                showAlert( message: "Please add user ID." ,completionHandler:
                 {
-                      _ = self.txtFirstName.becomeFirstResponder()
+                     self.txtUserId.becomeFirstResponder()
                 })
                 return
             }
         }
         
-        if (txtLastName != nil)
+        if (txtUserName != nil)
         {
-            if (txtLastName.text!.isEmpty)
+            if (txtUserName.text!.isEmpty)
             {
-                showAlert( "Please add last name." ,completionHandler:
+                showAlert( message: "Please add user name." ,completionHandler:
                 {
-                    _ = self.txtLastName.becomeFirstResponder()
+                    self.txtUserName.becomeFirstResponder()
                 })
                   return
             }
@@ -134,57 +70,29 @@ class SignUpModel: NSObject,UITextFieldDelegate
         {
             if (txtEmailId.text!.isEmpty)
             {
-                showAlert( "Please add EmailId." ,completionHandler: {
-                   _ =  self.txtEmailId.becomeFirstResponder()
+                showAlert( message: "Please add EmailId." ,completionHandler: {
+                    self.txtEmailId.becomeFirstResponder()
                 })
                 return
             }
     
-            if !isValidEmail(txtEmailId.text!)
+            if !isValidEmail(testStr: txtEmailId.text!)
             {
-                showAlert( "Please add valid EmailId." ,completionHandler:
-                    {
-                   _ =  self.txtEmailId.becomeFirstResponder()
+                showAlert( message: "Please add valid EmailId." ,completionHandler: {
+                    self.txtEmailId.becomeFirstResponder()
                 })
                 return
             }
             
         }
-        
-        
-        if (txtPhoneNumber != nil)
-        {
-            if (txtPhoneNumber.text!.isEmpty)
-            {
-                showAlert( "Please add Phone number ." ,completionHandler:
-                    {
-                       _ =  self.txtPhoneNumber.becomeFirstResponder()
-                })
-                return
-            }
-            
-            if txtPhoneNumber.text!.characters.count < Validations.maxPhoneNumber.rawValue
-            {
-                showAlert( "Password should have minium length of \(Validations.maxPhoneNumber.rawValue) character.",completionHandler:
-                    {
-                       _ =  self.txtPhoneNumber.becomeFirstResponder()
-                }
-                )
-                return
-            }
-            
-        }
-        
-        
-        
         
         if (txtPassword != nil)
         {
             if (txtPassword.text!.isEmpty)
             {
-                showAlert( "Please add password.", completionHandler:
+                showAlert( message: "Please add password.", completionHandler:
                 {
-                   _ = self.txtPassword.becomeFirstResponder()
+                    self.txtPassword.becomeFirstResponder()
                 
                 }
                 )
@@ -192,11 +100,10 @@ class SignUpModel: NSObject,UITextFieldDelegate
             }
             
             
-            if txtPassword.text!.characters.count < Validations.minPassword.rawValue
-            {
-                showAlert( "Password should have minium length of \(Validations.minPassword.rawValue) character.",completionHandler:
+            if txtPassword.text!.characters.count < 8 {
+                showAlert( message: "Password should have minium length of 8 character.",completionHandler:
                     {
-                       _ =   self.txtPassword.becomeFirstResponder()
+                         self.txtPassword.becomeFirstResponder()
                 }
                 )
                 return
@@ -207,18 +114,18 @@ class SignUpModel: NSObject,UITextFieldDelegate
         {
             if (txtconfirmPassword.text!.isEmpty)
             {
-                showAlert( "Please add confirm password.",completionHandler:
+                showAlert( message: "Please add confirm password.",completionHandler:
                     {
-                        _ =  self.txtconfirmPassword.becomeFirstResponder()
+                         self.txtconfirmPassword.becomeFirstResponder()
                 }
                 )
                 return
             }
             
-            if txtconfirmPassword.text!.characters.count < Validations.minPassword.rawValue {
-                showAlert( "confirm password should have minium length of \(Validations.minPassword.rawValue) character.",completionHandler:
+            if txtconfirmPassword.text!.characters.count < 8 {
+                showAlert( message: "confirm password should have minium length of 8 character.",completionHandler:
                 {
-                   _ =   self.txtconfirmPassword.becomeFirstResponder()
+                     self.txtconfirmPassword.becomeFirstResponder()
                 }
                     
                 )
@@ -227,16 +134,15 @@ class SignUpModel: NSObject,UITextFieldDelegate
             
             if txtconfirmPassword.text! != txtPassword.text!
             {
-                showAlert( "Confirm password didn't match with password." ,completionHandler:nil)
+                showAlert( message: "Confirm password didn't match with password." ,completionHandler:nil)
     
                 return
             }
         }
         
-        let user = UserSignUp(firstName: txtFirstName.text!, lastName: txtLastName.text!, phoneNumber: txtPhoneNumber.text!, password: txtPassword.text! , type : Social.general.rawValue , method :  ServiceMethod.signUp.rawValue)
-        
-        
-           closureDidTapOnSubmit?(user)
+        let userData:[String:String] = ["userId" : txtUserId.text!, "email" :txtEmailId.text!, "password" :txtPassword.text!, "userName" :txtUserName.text!]
+      
+           closureDidTapOnSubmit?(userData)
         
     
     }
@@ -245,37 +151,29 @@ class SignUpModel: NSObject,UITextFieldDelegate
     // MARK: Functions
     
     
-    func showAlert(  _ message :String , completionHandler : (() -> Swift.Void)? = nil )
+    func showAlert(  message :String , completionHandler : (() -> Swift.Void)? = nil )
     {
     
         let keywindow = UIApplication.shared.keyWindow
         let mainController = keywindow?.rootViewController
-        let alert = UIAlertController(title: "\(appName)", message: message, preferredStyle: UIAlertControllerStyle.alert)
-     
+        let alert = UIAlertController(title: "AppLog", message: message, preferredStyle: UIAlertControllerStyle.alert)
         alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: { (action: UIAlertAction!) in
-            
-            print("Heloo ")
-            
-            completionHandler?()
             
         }))
         
         mainController?.present(alert,animated:     true ,completion:
         {
-           
+            completionHandler?()
         })
         
     }
     
-    func isValidEmail(_ testStr:String) -> Bool
-    {
+    func isValidEmail(testStr:String) -> Bool {
         // print("validate calendar: \(testStr)")
         let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
         
         let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
-    
         return emailTest.evaluate(with: testStr)
-   
     }
     
     /*
@@ -304,20 +202,7 @@ class SignUpModel: NSObject,UITextFieldDelegate
                 return false
             }
             let newLength = currentCharacterCount + string.characters.count - range.length
-            return newLength <= Validations.maxUsername.rawValue
-        }
-        
-        
-        if (txtPhoneNumber != nil && txtPhoneNumber == textField)
-        {
-           
-            let currentCharacterCount = textField.text?.characters.count ?? 0
-            if (range.length + range.location > currentCharacterCount)
-            {
-                return false
-            }
-            let newLength = currentCharacterCount + string.characters.count - range.length
-            return newLength <= Validations.maxPhoneNumber.rawValue
+            return newLength <= 25
         }
         
         if (txtPassword != nil && txtPassword == textField)
@@ -330,7 +215,7 @@ class SignUpModel: NSObject,UITextFieldDelegate
                 return false
             }
             let newLength = currentCharacterCount + string.characters.count - range.length
-            return newLength <= Validations.maxPassword.rawValue
+            return newLength <= 15
         }
         
         if (txtconfirmPassword != nil && txtconfirmPassword == textField)
@@ -343,7 +228,7 @@ class SignUpModel: NSObject,UITextFieldDelegate
                 return false
             }
             let newLength = currentCharacterCount + string.characters.count - range.length
-            return newLength <= Validations.maxPassword.rawValue
+            return newLength <= 15
         }
         
     return true
