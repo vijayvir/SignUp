@@ -69,43 +69,30 @@ class LeoSignUpUIModel: NSObject, UITextFieldDelegate
 
 	func configure()
 	{
-
-
 		if (txtFirstName != nil)
 		{
-
-
 		}
-
 
 		if (txtLastName != nil)
 		{
-
-
 		}
-
-
 
 		if (txtPhoneNumber != nil)
 		{
-
+			txtPhoneNumber?.keyboardType = .decimalPad
 		}
-
-
+		if (txtEmailId != nil)
+		{
+			txtEmailId?.keyboardType = .emailAddress
+		}
 		if (txtPassword != nil)
 		{
-        txtPassword?.isSecureTextEntry = true
+			txtPassword?.isSecureTextEntry = true
 		}
-
-
 		if (txtconfirmPassword != nil)
 		{
-        txtconfirmPassword?.isSecureTextEntry = true
-
+			txtconfirmPassword?.isSecureTextEntry = true
 		}
-
-
-
 	}
 
 	@IBAction func actionSubmit(_ sender: Any)
